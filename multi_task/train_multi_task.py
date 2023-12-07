@@ -26,10 +26,13 @@ from min_norm_solvers import MinNormSolver, gradient_normalizers
 
 NUM_EPOCHS = 100
 
+FILE_CONFIGS = 'configs.json'
+FILE_PARAM = 'sample.json'
+
 @click.command()
 @click.option('--param_file', default='params.json', help='JSON parameters file')
 def train_multi_task(param_file):
-    with open('configs.json') as config_params:
+    with open(FILE_CONFIGS) as config_params:
         configs = json.load(config_params)
 
     with open(param_file) as json_params:
@@ -45,7 +48,8 @@ def train_multi_task(param_file):
     exp_identifier = '|'.join(exp_identifier)
     params['exp_id'] = exp_identifier
 
-    writer = SummaryWriter(log_dir='runs/{}_{}'.format(params['exp_id'], datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")))
+    # writer = SummaryWriter(log_dir='runs/{}_{}'.format(params['exp_id'], datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")))
+    wiriter = SummaryWriter(log_dir='runs/short_identifier')
 
     train_loader, train_dst, val_loader, val_dst = datasets.get_dataset(params, configs)
     loss_fn = losses.get_loss(params)
